@@ -85,7 +85,7 @@ export default function RootLayout({
           </main>
 
           {/* 하단 네비게이션 (모바일) */}
-          <nav className="fixed bottom-0 left-0 right-0 z-50 border-t md:hidden" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg)' }}>
+          <nav className="fixed bottom-0 left-0 right-0 z-50 border-t md:hidden bottom-nav-safe" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg)' }}>
             <div className="mx-auto max-w-3xl flex justify-around py-2">
               <a href="/" className="flex flex-col items-center gap-0.5 text-xs py-1 px-3" style={{ color: 'var(--accent)' }}>
                 <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>

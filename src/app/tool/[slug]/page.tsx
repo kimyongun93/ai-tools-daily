@@ -57,10 +57,10 @@ export default async function ToolDetailPage({ params }: Props) {
       </a>
 
       {/* 헤더 */}
-      <div className="flex items-start justify-between mb-6">
-        <div className="flex items-start gap-4">
+      <div className="mb-6">
+        <div className="flex items-start gap-3 sm:gap-4">
           <div
-            className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden"
             style={{ backgroundColor: 'var(--surface2)' }}
           >
             {tool.logo_url ? (
@@ -69,31 +69,31 @@ export default async function ToolDetailPage({ params }: Props) {
               tool.name.charAt(0).toUpperCase()
             )}
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">{tool.name}</h1>
-            <div className="flex items-center gap-3 mt-1">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <h1 className="text-xl sm:text-2xl font-bold leading-tight">{tool.name}</h1>
+              <div className="flex items-center gap-0.5 flex-shrink-0">
+                <BookmarkButton toolId={tool.id} size="md" />
+                <ShareButton title={tool.name} url={`/tool/${tool.slug}`} text={tool.summary_ko || undefined} size="md" />
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-1">
               {tool.category && (
-                <span className="text-sm" style={{ color: 'var(--text-dim)' }}>
+                <span className="text-xs sm:text-sm" style={{ color: 'var(--text-dim)' }}>
                   {tool.category.icon} {tool.category.name}
                 </span>
               )}
               {tool.score && (
-                <span className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>
+                <span className="text-xs sm:text-sm font-semibold" style={{ color: 'var(--accent)' }}>
                   ★ {tool.score}
                 </span>
               )}
-              <span className="text-sm" style={{ color: 'var(--text-dim)' }}>
+              <span className="text-xs sm:text-sm" style={{ color: 'var(--text-dim)' }}>
                 {PRICING_LABELS[tool.pricing_type]}
                 {tool.pricing_detail && ` · ${tool.pricing_detail}`}
               </span>
             </div>
           </div>
-        </div>
-
-        {/* 액션 버튼 */}
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <BookmarkButton toolId={tool.id} size="md" />
-          <ShareButton title={tool.name} url={`/tool/${tool.slug}`} text={tool.summary_ko || undefined} size="md" />
         </div>
       </div>
 

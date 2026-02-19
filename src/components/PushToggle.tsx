@@ -41,16 +41,19 @@ export function PushToggle() {
     <button
       onClick={toggle}
       disabled={loading}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
+      className="flex items-center gap-1.5 p-2 rounded-lg text-sm transition-colors"
       style={{
-        backgroundColor: subscribed ? 'color-mix(in srgb, var(--accent) 15%, transparent)' : 'var(--surface)',
+        backgroundColor: subscribed ? 'color-mix(in srgb, var(--accent) 15%, transparent)' : 'transparent',
         color: subscribed ? 'var(--accent)' : 'var(--text-dim)',
       }}
+      aria-label={loading ? '처리 중' : subscribed ? '알림 끄기' : '알림 받기'}
     >
-      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
       </svg>
-      {loading ? '처리 중...' : subscribed ? '알림 ON' : '알림 받기'}
+      <span className="hidden sm:inline text-xs font-medium">
+        {loading ? '...' : subscribed ? 'ON' : '알림'}
+      </span>
     </button>
   );
 }
