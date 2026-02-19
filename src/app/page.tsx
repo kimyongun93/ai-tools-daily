@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { ToolCard } from '@/components/ToolCard';
 import { FeaturedTool } from '@/components/FeaturedTool';
-import type { ToolWithCategory, DailyDigest } from '@/types';
+import type { Tool, ToolWithCategory, DailyDigest } from '@/types';
 
 // ISR: 5분마다 재생성
 export const revalidate = 300;
@@ -40,7 +40,7 @@ async function getTodayTools() {
       .eq('is_published', true)
       .gte('created_at', `${today}T00:00:00`)
       .order('score', { ascending: false, nullsFirst: false });
-    return (fallback || []).map((t: any) => ({ ...t, category: null })) as ToolWithCategory[];
+    return (fallback || []).map((t: Record<string, unknown>) => ({ ...(t as unknown as Tool), category: null })) as ToolWithCategory[];
   }
 
   return (tools || []) as ToolWithCategory[];
@@ -65,7 +65,7 @@ async function getRecentTools() {
       .eq('is_published', true)
       .order('created_at', { ascending: false })
       .limit(20);
-    return (fallback || []).map((t: any) => ({ ...t, category: null })) as ToolWithCategory[];
+    return (fallback || []).map((t: Record<string, unknown>) => ({ ...(t as unknown as Tool), category: null })) as ToolWithCategory[];
   }
 
   return (tools || []) as ToolWithCategory[];

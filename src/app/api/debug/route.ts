@@ -8,6 +8,7 @@ export async function GET() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const today = new Date().toISOString().split('T')[0];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const results: Record<string, any> = {
     env_check: {
       url_set: !!url,
@@ -42,7 +43,7 @@ export async function GET() {
       .select('id, name, category_slug, is_published')
       .eq('is_published', true)
       .limit(3);
-    results.test2_no_join = { count: data?.length, data: data?.map(d => d.name), error: error?.message };
+    results.test2_no_join = { count: data?.length, data: data?.map((d: { name: string }) => d.name), error: error?.message };
   } catch (e) {
     results.test2_no_join = { error: (e as Error).message };
   }
@@ -79,7 +80,7 @@ export async function GET() {
       .eq('is_published', true)
       .gte('created_at', `${today}T00:00:00`)
       .limit(3);
-    results.test5_today = { count: data?.length, data: data?.map(d => d.name), error: error?.message };
+    results.test5_today = { count: data?.length, data: data?.map((d: { name: string }) => d.name), error: error?.message };
   } catch (e) {
     results.test5_today = { error: (e as Error).message };
   }
@@ -92,7 +93,7 @@ export async function GET() {
       .eq('is_published', true)
       .order('created_at', { ascending: false })
       .limit(3);
-    results.test6_recent = { count: data?.length, data: data?.map(d => d.name), error: error?.message };
+    results.test6_recent = { count: data?.length, data: data?.map((d: { name: string }) => d.name), error: error?.message };
   } catch (e) {
     results.test6_recent = { error: (e as Error).message };
   }

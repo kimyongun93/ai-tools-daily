@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export const revalidate = 600;
 
-async function getCategories() {
+async function getCategories(): Promise<(Category & { tool_count: number })[]> {
   const supabase = createServerSupabaseClient();
 
   // 카테고리별 도구 수 집계
@@ -21,7 +21,7 @@ async function getCategories() {
 
   // 각 카테고리별 도구 수 조회
   const results = await Promise.all(
-    categories.map(async (cat) => {
+    (categories as Category[]).map(async (cat) => {
       const { count } = await supabase
         .from('ai_tools')
         .select('*', { count: 'exact', head: true })
