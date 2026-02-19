@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
   // 실행 로그 생성
   const { data: run } = await supabase
     .from('agent_runs')
-    .insert({ run_date: runDate, status: 'running' })
+    .insert({ source: 'collect-ai-tools', status: 'running' })
     .select()
     .single();
 
@@ -113,11 +113,15 @@ Deno.serve(async (req) => {
       .from('agent_runs')
       .update({
         status: hasErrors ? 'partial' : 'success',
-        tools_collected: allRaw.length,
-        tools_new: savedCount,
-        tools_duplicate: dedupResult.duplicateCount,
-        errors: hasErrors ? errors : null,
-        duration_ms: duration,
+        tools_found: allRaw.length,
+        tools_saved: savedCount,
+        details: {
+          duplicates: dedupResult.duplicateCount,
+          dedup_details: dedupResult.details,
+          source_stats: sourceStats,
+          errors: hasErrors ? errors : null,
+          duration_ms: duration,
+        },
         completed_at: new Date().toISOString(),
       })
       .eq('id', run?.id);
@@ -146,8 +150,11 @@ Deno.serve(async (req) => {
       .from('agent_runs')
       .update({
         status: 'failed',
-        errors: { fatal: (error as Error).message, ...errors },
-        duration_ms: duration,
+        details: {
+          fatal: (error as Error).message,
+          errors,
+          duration_ms: duration,
+        },
         completed_at: new Date().toISOString(),
       })
       .eq('id', run?.id);
@@ -171,13 +178,6 @@ async function saveTools(tools: ProcessedTool[]): Promise<number> {
 
   for (const tool of tools) {
     try {
-      // 카테고리 ID 조회
-      const { data: cat } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', tool.category_slug)
-        .single();
-
       // 슬러그 생성 (URL-safe, 유니크)
       const baseSlug = tool.name
         .toLowerCase()
@@ -186,14 +186,14 @@ async function saveTools(tools: ProcessedTool[]): Promise<number> {
         .slice(0, 80);
       const uniqueSlug = `${baseSlug}-${Date.now().toString(36)}`;
 
-      const { error } = await supabase.from('tools').insert({
+      const { error } = await supabase.from('ai_tools').insert({
         name: tool.name,
         slug: uniqueSlug,
         summary_ko: tool.summary_ko,
         description_en: tool.description,
         url: tool.url,
         logo_url: tool.logo_url,
-        category_id: cat?.id || null,
+        category_slug: tool.category_slug,
         tags: tool.tags,
         pricing_type: tool.pricing_type,
         pricing_detail: tool.pricing_detail,
@@ -220,7 +220,7 @@ async function saveTools(tools: ProcessedTool[]): Promise<number> {
 
 async function createDailyDigest(date: string) {
   const { data: todayTools } = await supabase
-    .from('tools')
+    .from('ai_tools')
     .select('id, score, name')
     .gte('created_at', `${date}T00:00:00`)
     .eq('is_published', true)
@@ -237,7 +237,7 @@ async function createDailyDigest(date: string) {
   // featured 마킹
   if (featuredTool) {
     await supabase
-      .from('tools')
+      .from('ai_tools')
       .update({ is_featured: true })
       .eq('id', featuredTool.id);
   }

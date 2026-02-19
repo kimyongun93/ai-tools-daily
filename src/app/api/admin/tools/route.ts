@@ -49,17 +49,6 @@ export async function POST(req: NextRequest) {
 
     const supabase = getAdminClient();
 
-    // 카테고리 조회
-    let categoryId = null;
-    if (category_slug) {
-      const { data: cat } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', category_slug)
-        .single();
-      categoryId = cat?.id || null;
-    }
-
     // 슬러그 생성
     const baseSlug = name
       .toLowerCase()
@@ -68,14 +57,14 @@ export async function POST(req: NextRequest) {
       .slice(0, 80);
 
     const { data, error } = await supabase
-      .from('tools')
+      .from('ai_tools')
       .insert({
         name,
         slug: `${baseSlug}-${Date.now().toString(36)}`,
         url,
         summary_ko: summary_ko || `${name} - 새로운 AI 도구`,
         description_en: description_en || null,
-        category_id: categoryId,
+        category_slug: category_slug || null,
         tags: tags || [],
         pricing_type: pricing_type || 'free',
         pricing_detail: pricing_detail || null,
@@ -115,7 +104,7 @@ export async function GET(req: NextRequest) {
     const source = searchParams.get('source'); // 특정 소스만 필터
 
     let query = supabase
-      .from('tools')
+      .from('ai_tools')
       .select('id, name, slug, url, source, score, is_published, created_at')
       .order('created_at', { ascending: false })
       .limit(limit);

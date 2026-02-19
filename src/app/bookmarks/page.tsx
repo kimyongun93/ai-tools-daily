@@ -22,8 +22,8 @@ export default function BookmarksPage() {
 
       const supabase = createClient();
       const { data } = await supabase
-        .from('tools')
-        .select('*, category:categories(*)')
+        .from('ai_tools')
+        .select('*, category:categories!category_slug(*)')
         .in('id', stored)
         .eq('is_published', true)
         .order('created_at', { ascending: false });

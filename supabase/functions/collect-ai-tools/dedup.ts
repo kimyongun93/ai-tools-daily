@@ -107,7 +107,7 @@ export async function deduplicateTools(
 
   // 1. DB에서 기존 도구 URL + 이름 조회
   const { data: existingTools } = await supabase
-    .from('tools')
+    .from('ai_tools')
     .select('url, name')
     .order('created_at', { ascending: false })
     .limit(500); // 최근 500개만 비교 (성능 최적화)

@@ -13,8 +13,8 @@ interface Props {
 async function getTool(slug: string) {
   const supabase = createServerSupabaseClient();
   const { data } = await supabase
-    .from('tools')
-    .select('*, category:categories(*)')
+    .from('ai_tools')
+    .select('*, category:categories!category_slug(*)')
     .eq('slug', slug)
     .eq('is_published', true)
     .single();

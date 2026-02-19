@@ -24,9 +24,9 @@ async function getCategories() {
   const results = await Promise.all(
     categories.map(async (cat) => {
       const { count } = await supabase
-        .from('tools')
+        .from('ai_tools')
         .select('*', { count: 'exact', head: true })
-        .eq('category_id', cat.id)
+        .eq('category_slug', cat.slug)
         .eq('is_published', true);
       return { ...cat, tool_count: count || 0 };
     })

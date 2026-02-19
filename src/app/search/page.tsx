@@ -20,8 +20,8 @@ export default function SearchPage() {
       setLoading(true);
       const supabase = createClient();
       const { data } = await supabase
-        .from('tools')
-        .select('*, category:categories(*)')
+        .from('ai_tools')
+        .select('*, category:categories!category_slug(*)')
         .eq('is_published', true)
         .textSearch('fts', query.trim(), { type: 'websearch' })
         .limit(30);

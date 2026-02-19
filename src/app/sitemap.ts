@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // 도구 상세 페이지 (최근 200개)
     const { data: tools } = await supabase
-      .from('tools')
+      .from('ai_tools')
       .select('slug, created_at')
       .eq('is_published', true)
       .order('created_at', { ascending: false })

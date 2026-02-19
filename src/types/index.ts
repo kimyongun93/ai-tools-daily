@@ -26,7 +26,7 @@ export interface Tool {
   url: string;
   logo_url: string | null;
   screenshot_url: string | null;
-  category_id: string | null;
+  category_slug: string | null;
   tags: string[];
   pricing_type: PricingType;
   pricing_detail: string | null;
@@ -82,14 +82,12 @@ export interface PushSubscription {
 
 export interface AgentRun {
   id: string;
-  run_date: string;
+  source: string;
   status: AgentRunStatus;
-  tools_collected: number;
-  tools_new: number;
-  tools_duplicate: number;
-  errors: Record<string, unknown> | null;
-  duration_ms: number | null;
-  started_at: string;
+  tools_found: number;
+  tools_saved: number;
+  details: Record<string, unknown> | null;
+  created_at: string;
   completed_at: string | null;
 }
 

@@ -24,12 +24,24 @@ async function getTodayTools() {
   const supabase = createServerSupabaseClient();
   const today = new Date().toISOString().split('T')[0];
 
-  const { data: tools } = await supabase
-    .from('tools')
-    .select('*, category:categories(*)')
+  const { data: tools, error } = await supabase
+    .from('ai_tools')
+    .select('*, category:categories!category_slug(*)')
     .eq('is_published', true)
     .gte('created_at', `${today}T00:00:00`)
     .order('score', { ascending: false, nullsFirst: false });
+
+  if (error) {
+    console.error('[getTodayTools] error:', error.message, error.details);
+    // Fallback: 조인 없이 재시도
+    const { data: fallback } = await supabase
+      .from('ai_tools')
+      .select('*')
+      .eq('is_published', true)
+      .gte('created_at', `${today}T00:00:00`)
+      .order('score', { ascending: false, nullsFirst: false });
+    return (fallback || []).map((t: any) => ({ ...t, category: null })) as ToolWithCategory[];
+  }
 
   return (tools || []) as ToolWithCategory[];
 }
@@ -37,12 +49,24 @@ async function getTodayTools() {
 async function getRecentTools() {
   const supabase = createServerSupabaseClient();
 
-  const { data: tools } = await supabase
-    .from('tools')
-    .select('*, category:categories(*)')
+  const { data: tools, error } = await supabase
+    .from('ai_tools')
+    .select('*, category:categories!category_slug(*)')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
     .limit(20);
+
+  if (error) {
+    console.error('[getRecentTools] error:', error.message, error.details);
+    // Fallback: 조인 없이 재시도
+    const { data: fallback } = await supabase
+      .from('ai_tools')
+      .select('*')
+      .eq('is_published', true)
+      .order('created_at', { ascending: false })
+      .limit(20);
+    return (fallback || []).map((t: any) => ({ ...t, category: null })) as ToolWithCategory[];
+  }
 
   return (tools || []) as ToolWithCategory[];
 }

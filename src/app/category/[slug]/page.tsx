@@ -29,23 +29,14 @@ async function getCategoryTools(slug: string) {
   const supabase = createServerSupabaseClient();
 
   let query = supabase
-    .from('tools')
-    .select('*, category:categories(*)')
+    .from('ai_tools')
+    .select('*, category:categories!category_slug(*)')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
     .limit(50);
 
   if (slug !== 'all') {
-    // 카테고리 ID로 필터
-    const { data: cat } = await supabase
-      .from('categories')
-      .select('id')
-      .eq('slug', slug)
-      .single();
-
-    if (cat) {
-      query = query.eq('category_id', cat.id);
-    }
+    query = query.eq('category_slug', slug);
   }
 
   const { data } = await query;
