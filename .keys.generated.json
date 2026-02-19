@@ -1,0 +1,7 @@
+{
+  "vapid_public_key": "BOuOtV392XnKUND_cFHrBhH42IqR1mtsSD1prfSmHDcQHUjyfUQjeALar-qY9B28H0PSWNxpbdMQLdZWH7DLfZw",
+  "vapid_private_key": "7lCLKe7EzBZTB89z_fW2ssFfDhk-yoIOPZQcVmr6w0E",
+  "admin_api_key": "atd-admin-0606ddec9b3b46f7260fcd4982000981",
+  "cron_secret": "atd-cron-abb922a096db11d3c363cedf22049727",
+  "revalidate_secret": "atd-reval-b2e7abe5c700bfb4e70db1d29bed15af"
+}
