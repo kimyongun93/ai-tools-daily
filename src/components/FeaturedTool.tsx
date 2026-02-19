@@ -15,11 +15,11 @@ export function FeaturedTool({ tool }: { tool: ToolWithCategory }) {
         </a>
       )}
 
-      <div className="p-5">
-        <div className="flex items-start justify-between mb-3">
-          <a href={`/tool/${tool.slug}`} className="flex items-center gap-3">
+      <div className="p-4 sm:p-5">
+        <div className="flex items-start gap-3 mb-3">
+          <a href={`/tool/${tool.slug}`} className="flex items-center gap-3 flex-1 min-w-0">
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 overflow-hidden"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0 overflow-hidden"
               style={{ backgroundColor: 'var(--surface2)' }}
             >
               {tool.logo_url ? (
@@ -30,16 +30,16 @@ export function FeaturedTool({ tool }: { tool: ToolWithCategory }) {
                 </span>
               )}
             </div>
-            <div>
-              <h3 className="font-bold text-lg">{tool.name}</h3>
+            <div className="min-w-0">
+              <h3 className="font-bold text-base sm:text-lg leading-tight truncate">{tool.name}</h3>
               <div className="flex items-center gap-2 mt-0.5">
                 {tool.category && (
-                  <span className="text-xs" style={{ color: 'var(--text-dim)' }}>
+                  <span className="text-[11px] sm:text-xs" style={{ color: 'var(--text-dim)' }}>
                     {tool.category.icon} {tool.category.name}
                   </span>
                 )}
                 {tool.score && (
-                  <span className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>
+                  <span className="text-[11px] sm:text-xs font-semibold" style={{ color: 'var(--accent)' }}>
                     ★ {tool.score}
                   </span>
                 )}
@@ -48,7 +48,7 @@ export function FeaturedTool({ tool }: { tool: ToolWithCategory }) {
           </a>
 
           {/* 액션 버튼 */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5 flex-shrink-0">
             <BookmarkButton toolId={tool.id} size="md" />
             <ShareButton title={tool.name} url={`/tool/${tool.slug}`} size="md" />
           </div>

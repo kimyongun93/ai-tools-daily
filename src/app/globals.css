@@ -40,6 +40,7 @@
 body {
   background-color: var(--bg);
   color: var(--text);
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* 스크롤바 */
@@ -49,18 +50,37 @@ body {
 
 /* PWA 독립 모드 */
 @media (display-mode: standalone) {
-  .install-prompt { display: none; }
+  .install-prompt { display: none !important; }
 }
 
-/* 토스트 애니메이션 */
+/* ===== 애니메이션 ===== */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateX(-50%) translateY(10px); }
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(20px); }
+}
+
+/* ===== 모바일 최적화 ===== */
+
 /* 모바일 액션 버튼 항상 표시 */
 @media (max-width: 768px) {
   .group .opacity-0 {
     opacity: 1 !important;
+  }
+}
+
+/* 하단 내비 safe area */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom-nav-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
   }
 }
