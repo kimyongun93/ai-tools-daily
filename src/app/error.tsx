@@ -1,12 +1,9 @@
 'use client';
 
-export default function Error({
-  error: _error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function Error(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  { error, reset }: { error: Error & { digest?: string }; reset: () => void }
+) {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <p className="text-5xl mb-4">⚠️</p>
