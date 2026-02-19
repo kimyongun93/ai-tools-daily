@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { PushToggle } from '@/components/PushToggle';
+import { InstallPrompt } from '@/components/InstallPrompt';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -104,6 +105,9 @@ export default function RootLayout({
               </a>
             </div>
           </nav>
+
+          {/* PWA 설치 프롬프트 */}
+          <InstallPrompt />
 
           {/* Service Worker 등록 */}
           <script
