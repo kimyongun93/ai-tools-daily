@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server';
+import type { Category } from '@/types';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
